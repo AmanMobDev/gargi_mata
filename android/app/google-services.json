@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "273773587800",
+    "firebase_url": "https://gargimata-d749f-default-rtdb.firebaseio.com",
+    "project_id": "gargimata-d749f",
+    "storage_bucket": "gargimata-d749f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273773587800:android:b7042cecf614088a62492d",
+        "android_client_info": {
+          "package_name": "app.gargi.mata.gargi_mata"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVR1wxL_gQJDar7JOtJmeWqQ9XQlAj4jo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
