@@ -15,16 +15,16 @@ Future<void> setupLocator() async {
 
   // Register JoinRepository
   locator.registerSingleton<JoinDataRepository>(
-    JoinDataRepositoryImpl(joinDataSource: locator<JoinDataSourceImp>()),
+    JoinDataRepository(joinDataSource: locator<JoinDataSourceImp>()),
   );
 
   // Register JoinDataUseCase
-  locator.registerSingleton<JoinDataUseCase>(
-    JoinDataUseCase(joinDataRepository: locator<JoinDataRepository>()),
+  locator.registerSingleton<GetJoinDataUseCase>(
+    GetJoinDataUseCase(repository: locator<JoinDataRepository>()),
   );
 
   // Register JoinBloc
   locator.registerFactory<JoinBloc>(
-    () => JoinBloc(joinDataUseCase: locator<JoinDataUseCase>()),
+    () => JoinBloc(getJoinDataUseCase: locator<GetJoinDataUseCase>()),
   );
 }

@@ -8,3 +8,9 @@ abstract class JoinEvent extends Equatable {
 }
 
 class GetJoinEvent extends JoinEvent {}
+
+// New event to update UI state
+class UpdateJoinDataEvent extends JoinEvent {
+  final List<JoinResponseModel> joinResponseModels;
+  const UpdateJoinDataEvent(this.joinResponseModels);
+}

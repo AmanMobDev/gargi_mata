@@ -34,7 +34,7 @@ class _DaanScreenState extends State<DaanScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
-          spacing: 20.0,
+          spacing: 30.0,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -146,9 +146,83 @@ class _DaanScreenState extends State<DaanScreen> {
             //        ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-              child: Text(
-                "Account Details",
-                style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                spacing: 15.0,
+                children: [
+                  Text(
+                    "Account Details",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    spacing: 10.0,
+                    children: [
+                      Row(
+                        spacing: 5.0,
+                        children: [
+                          Text(
+                            "Account Number : ",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                          Text(
+                            "4092 890 899 120",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        spacing: 5.0,
+                        children: [
+                          Text(
+                            "Account Holder Name : ",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                          Text(
+                            "Gargi Mata",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        spacing: 5.0,
+                        children: [
+                          Text(
+                            "IFSC CODE : ",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                          Text(
+                            "ICICI0009912",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],

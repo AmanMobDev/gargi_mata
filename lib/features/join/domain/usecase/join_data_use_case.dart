@@ -1,12 +1,22 @@
 import 'package:gargi_mata/features/join/data/model/response/join_response_model.dart';
 
-import '../repository/join_repository.dart';
+import '../../data/repository/join_data_repository.dart';
 
-class JoinDataUseCase {
-  final JoinDataRepository joinDataRepository;
-  JoinDataUseCase({required this.joinDataRepository});
+class GetJoinDataUseCase {
+  final JoinDataRepository repository;
 
-  Future<List<JoinResponseModel>> execute() async {
-    return await joinDataRepository.getJoinDataRepository();
+  GetJoinDataUseCase({required this.repository});
+
+  Stream<List<JoinResponseModel>> call() {
+    return repository.getJoinData();
   }
 }
+
+// class JoinDataUseCase {
+//   final JoinDataRepository joinDataRepository;
+//   JoinDataUseCase({required this.joinDataRepository});
+//
+//   Stream<List<JoinResponseModel>> execute() {
+//     return joinDataRepository.callJoinData();
+//   }
+// }

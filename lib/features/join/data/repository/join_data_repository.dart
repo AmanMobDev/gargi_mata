@@ -4,12 +4,12 @@ import '../../../../config/exports/app_export.dart';
  *Created By Aman Mishra
  ******************************************************************************/
 
-class JoinDataRepositoryImpl implements JoinDataRepository {
+class JoinDataRepository implements JoinDomainRepository {
   final JoinDataSource joinDataSource;
-  JoinDataRepositoryImpl({required this.joinDataSource});
+  JoinDataRepository({required this.joinDataSource});
 
   @override
-  Future<List<JoinResponseModel>> getJoinDataRepository() {
+  Stream<List<JoinResponseModel>> getJoinData() {
     return joinDataSource.getJoinData();
   }
 }

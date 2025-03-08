@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'config/exports/app_export.dart';
 
@@ -15,6 +16,10 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await setupLocator();
   WidgetsBinding.instance.addPostFrameCallback((_) {});
+  // await initializeDateFormatting(
+  //   'hi_IN',
+  //   null.toString(),
+  // ); // Initialize Hindi locale
   runApp(MyApp());
 }
 
@@ -35,6 +40,17 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: RouteName.splashScreen,
         onGenerateRoute: Routes.generateRoutes,
+        // Add localization support
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          Locale('hi', 'IN'), // Hindi Locale
+          Locale('en', 'US'), // English (Optional)
+        ],
+        locale: Locale('hi', 'IN'),
       ),
     );
   }

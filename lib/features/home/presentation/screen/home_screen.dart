@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import '../../../../config/exports/app_export.dart';
 
 /*******************************************************************************
@@ -75,6 +77,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<String> _getEventsForDay(DateTime day) {
     return _events[DateTime.utc(day.year, day.month, day.day)] ?? [];
+  }
+
+  // Function to format date in Hindi
+  String formatDateHindi(DateTime date) {
+    return DateFormat.yMMMMd('hi').format(date);
   }
 
   @override
@@ -173,6 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: TableCalendar(
+            locale: 'hi',
             firstDay: DateTime.utc(2025, 1, 1),
             lastDay: DateTime.utc(2040, 12, 31),
             focusedDay: _focusedDay,
@@ -184,21 +192,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 _focusedDay = focusedDay;
               });
             },
-            headerStyle: const HeaderStyle(
+            headerStyle: HeaderStyle(
               formatButtonVisible: false,
               titleCentered: true,
+              titleTextStyle: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppColor.backgroundColor,
+              ),
             ),
             calendarStyle: CalendarStyle(
               todayDecoration: BoxDecoration(
                 color: AppColor.backgroundColorWithOpacity,
+
                 shape: BoxShape.circle,
               ),
               selectedDecoration: BoxDecoration(
                 color: AppColor.backgroundColor,
                 shape: BoxShape.circle,
               ),
-              isTodayHighlighted: true,
-              canMarkersOverflow: true,
+              outsideDaysVisible: false,
             ),
             daysOfWeekVisible: true, // Show days of the week
           ),
