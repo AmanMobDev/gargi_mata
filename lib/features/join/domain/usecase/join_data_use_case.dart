@@ -11,12 +11,3 @@ class GetJoinDataUseCase {
     return repository.getJoinData();
   }
 }
-
-// class JoinDataUseCase {
-//   final JoinDataRepository joinDataRepository;
-//   JoinDataUseCase({required this.joinDataRepository});
-//
-//   Stream<List<JoinResponseModel>> execute() {
-//     return joinDataRepository.callJoinData();
-//   }
-// }

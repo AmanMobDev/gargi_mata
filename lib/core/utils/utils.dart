@@ -1,19 +1,22 @@
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../config/exports/app_export.dart';
+
 /*******************************************************************************
  *Created By Aman Mishra
  ******************************************************************************/
 class Utils {
   static toastMessages({String? message}) {
-    Fluttertoast.showToast(
-      msg: message!,
-      gravity: ToastGravity.SNACKBAR,
-    );
+    Fluttertoast.showToast(msg: message!, gravity: ToastGravity.SNACKBAR);
   }
 
-  static snackBarMessages({String? title, String? message}) {
-    //Get.snackbar(title!, message!, snackPosition: SnackPosition.BOTTOM);
+  static snackBarMessages({BuildContext? context, String? message}) {
+    if (message!.isNotEmpty) {
+      ScaffoldMessenger.of(context!).showSnackBar(
+        SnackBar(content: Text(message), duration: Duration(seconds: 1)),
+      );
+    }
   }
 
   static dynamic printOnError({dynamic data}) {

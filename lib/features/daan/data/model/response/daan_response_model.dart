@@ -1,4 +1,4 @@
-import 'package:gargi_mata/features/daan/domain/entities/daan_entitie.dart';
+import '../../../../../config/exports/app_export.dart';
 
 class DaanResponseModel extends DaanEntities {
   DaanResponseModel({

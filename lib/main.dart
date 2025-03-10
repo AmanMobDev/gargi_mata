@@ -1,5 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:gargi_mata/features/daan/presentation/bloc/daan_bloc.dart';
+import 'package:gargi_mata/features/samagri/presentation/bloc/samagri_bloc.dart';
+import 'package:gargi_mata/features/samagri/presentation/bloc/samagri_event.dart';
 
 import 'config/exports/app_export.dart';
 
@@ -11,15 +14,11 @@ Future<void> main() async {
     value,
   ) {
     Logger.init(kReleaseMode ? LogMode.live : LogMode.debug);
-    Logger.log("data");
+    Logger.log("log Data");
   });
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await setupLocator();
   WidgetsBinding.instance.addPostFrameCallback((_) {});
-  // await initializeDateFormatting(
-  //   'hi_IN',
-  //   null.toString(),
-  // ); // Initialize Hindi locale
   runApp(MyApp());
 }
 
@@ -34,6 +33,12 @@ class MyApp extends StatelessWidget {
         BlocProvider<SplashBloc>(create: (context) => SplashBloc()),
         BlocProvider<JoinBloc>(
           create: (context) => locator<JoinBloc>()..add(GetJoinEvent()),
+        ),
+        BlocProvider<DaanBloc>(
+          create: (context) => locator<DaanBloc>()..add(GetDaanEvent()),
+        ),
+        BlocProvider<SamagriBloc>(
+          create: (context) => locator<SamagriBloc>()..add(GetSamagriEvent()),
         ),
       ],
       child: MaterialApp(

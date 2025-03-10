@@ -33,6 +33,8 @@ class _BaseScreenState extends State<BaseScreen> {
     return SafeArea(
       child: Scaffold(
         body: Container(
+          width: MediaQuery.sizeOf(context).width,
+          height: MediaQuery.sizeOf(context).height,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topRight,

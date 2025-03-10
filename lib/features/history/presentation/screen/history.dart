@@ -1,7 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../../../../config/exports/app_export.dart';
-import '../../../../config/services/firebase/database_services.dart';
 
 /*******************************************************************************
  * Created By Aman Mishra
@@ -23,7 +20,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return CommonScreen(
-      appTitle: "History",
+      appTitle: "",
       child: StreamBuilder<QuerySnapshot>(
         stream: DataBaseCollectionServices().readData(
           "database",

@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+import 'package:gargi_mata/config/exports/app_export.dart';
 
 abstract class DaanStates extends Equatable {
   const DaanStates();
@@ -14,8 +14,13 @@ class DaanLoadingState extends DaanStates {
   const DaanLoadingState();
 }
 
-class DaanLoadedState extends DaanStates {
-  const DaanLoadedState();
+class DaanDataLoadedState extends DaanStates {
+  final List<DaanResponseModel> daanResponseModel;
+
+  DaanDataLoadedState({required this.daanResponseModel});
+
+  @override
+  List<Object?> get props => [daanResponseModel];
 }
 
 class DaanErrorState extends DaanStates {
