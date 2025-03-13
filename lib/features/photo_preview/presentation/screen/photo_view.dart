@@ -18,19 +18,19 @@ class _PhotoViewScreenState extends State<PhotoViewScreen> {
             as Map;
 
     debugPrint("ImageURL${imageURL.toString()}");
-    return  CommonScreen(
+    return CommonScreen(
       appTitle: "",
       child: Container(
         child:
-        imageURL['image'] == null
-            ? Center(child: Text("No Image"))
-            : Center(
-          child: Image.asset(
-            imageURL['image'].toString(),
-            fit: BoxFit.fill,
-            scale: 1.0,
-          ),
-        ),
+            imageURL['image'] == null
+                ? Center(child: Text("No Image"))
+                : Center(
+                  child: Image.network(
+                    imageURL['image'].toString(),
+                    fit: BoxFit.fill,
+                    scale: 1.0,
+                  ),
+                ),
       ),
     );
   }
