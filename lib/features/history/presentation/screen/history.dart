@@ -20,7 +20,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return CommonScreen(
-      appTitle: "",
+      appTitle: "इतिहास",
       child: StreamBuilder<QuerySnapshot>(
         stream: DataBaseCollectionServices().readData(
           "database",

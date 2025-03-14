@@ -6,7 +6,7 @@ class BhajanDataRepository implements BhajanDomainRepository {
   final BhajanDataSourceImp bhajanDataSourceImp;
   BhajanDataRepository({required this.bhajanDataSourceImp});
   @override
-  Stream<List<BhajanResponseModel>> getBhajanDomainRepository() {
+  Future<List<BhajanResponseModel>> getBhajanDomainRepository() {
     return bhajanDataSourceImp.getBhajanList();
   }
 }

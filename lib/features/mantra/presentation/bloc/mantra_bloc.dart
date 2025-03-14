@@ -33,4 +33,11 @@ class MantraBloc extends Bloc<MantraEvents, MantraStates> {
       }
     });
   }
+
+  @override
+  Future<void> close() {
+    _streamSubscription
+        ?.cancel(); // Cancel the subscription to avoid memory leaks
+    return super.close();
+  }
 }

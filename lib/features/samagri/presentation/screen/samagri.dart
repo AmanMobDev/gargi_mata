@@ -44,7 +44,7 @@ class _SamagriScreenState extends State<SamagriScreen> {
   @override
   Widget build(BuildContext context) {
     return CommonScreen(
-      appTitle: "",
+      appTitle: "सामग्री",
       child: Container(
         width: MediaQuery.sizeOf(context).width,
         height: MediaQuery.sizeOf(context).height,
@@ -53,7 +53,7 @@ class _SamagriScreenState extends State<SamagriScreen> {
           stream: context.read<SamagriBloc>().samagriUseCase(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return customCircularProgressIndicator();
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

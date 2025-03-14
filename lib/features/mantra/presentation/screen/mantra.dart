@@ -17,7 +17,7 @@ class _MantraScreenState extends State<MantraScreen> {
   @override
   Widget build(BuildContext context) {
     return CommonScreen(
-      appTitle: "",
+      appTitle: "मंत्र",
       child: Container(
         width: MediaQuery.sizeOf(context).width,
         height: MediaQuery.sizeOf(context).height,
@@ -36,27 +36,39 @@ class _MantraScreenState extends State<MantraScreen> {
               return ListView.builder(
                 shrinkWrap: true,
                 itemCount: mantraData.length,
-                padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
                 itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: 10.0,
-                      children: [
-                        TextWidget(value: mantraData[index].title),
-
-                        Text(
-                          mantraData[index].mantra,
-                          style: TextStyle(
-                            color: AppColor.blackColor,
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w600,
-                          ),
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    // spacing: 10.0,
+                    children: [
+                      SizedBox(height: 10.0),
+                      TextWidget(
+                        value: mantraData[index].title,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      SizedBox(height: 15.0),
+                      Text(
+                        mantraData[index].mantra,
+                        style: TextStyle(
+                          color: AppColor.blackColor,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w600,
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 12.0),
+                      // Divider(
+                      //   color: AppColor.backgroundColor,
+                      //   height: 2.0,
+                      //   thickness: 2.0,
+                      //   indent: 10.0,
+                      //   endIndent: 10.0,
+                      // ),
+                      // SizedBox(height: 10.0),
+                    ],
                   );
                 },
                 physics: BouncingScrollPhysics(),

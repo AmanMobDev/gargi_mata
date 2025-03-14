@@ -10,17 +10,14 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
   }
 
   Future<void> _navigateHome(
-      SplashEvent event, Emitter<SplashState> emit) async {
-    debugPrint("Start");
+    SplashEvent event,
+    Emitter<SplashState> emit,
+  ) async {
+    emit(SplashLoadingState());
     try {
-      emit(SplashLoadingState());
-
-      await Future.delayed(
-        Duration(seconds: 3),
-        () {
-          emit(SplashLoadedState());
-        },
-      );
+      await Future.delayed(Duration(seconds: 3), () {
+        emit(SplashLoadedState());
+      });
     } catch (e) {
       debugPrint("ERROR");
       emit(SplashErrorState(message: e.toString()));

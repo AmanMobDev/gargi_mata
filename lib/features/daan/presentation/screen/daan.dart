@@ -23,7 +23,7 @@ class _DaanScreenState extends State<DaanScreen> {
   @override
   Widget build(BuildContext context) {
     return CommonScreen(
-      appTitle: "",
+      appTitle: "दान पात्र",
       child: SizedBox(
         width: MediaQuery.sizeOf(context).width,
         height: MediaQuery.sizeOf(context).height,

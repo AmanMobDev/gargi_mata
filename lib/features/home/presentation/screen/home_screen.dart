@@ -12,20 +12,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Map<String, String>> imgList = [
-    {"name": "कात्यायनी", "image": "assets/images/कात्यायनी.jpeg"},
-    {"name": "कालरात्रि", "image": "assets/images/कालरात्रि.webp"},
-    {"name": "कुष्मांडा", "image": "assets/images/कुष्मांडा.png"},
-    {"name": "चंद्रघंटा", "image": "assets/images/चंद्रघंटा.png"},
-    {"name": "ब्रह्मचारिणी", "image": "assets/images/ब्रह्मचारिणी.gif"},
-    {"name": "ब्रह्मचारिणी", "image": "assets/images/ब्रह्मचारिणी.gif"},
-    {"name": "महागौरी", "image": "assets/images/महागौरी.png"},
-    {"name": "शैलपुत्री", "image": "assets/images/शैलपुत्री.jpeg"},
-    {"name": "सिद्धिदात्री", "image": "assets/images/सिद्धिदात्री.png"},
-    {"name": "स्कन्दमाता", "image": "assets/images/स्कन्दमाता.jpeg"},
-    {"name": "गार्गी माता", "image": "assets/images/gargi.jpeg"},
-  ];
-
   // final FirebaseFirestore firestore = FirebaseFirestore.instance;
   //
   // Future<void> uploadData() async {
@@ -83,18 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
-  late Map<DateTime, List<String>> _events;
-
-  List<String> _getEventsForDay(DateTime day) {
-    return _events[DateTime.utc(day.year, day.month, day.day)] ?? [];
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    // uploadData();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     scrollDirection: Axis.horizontal,
                   ),
                   items:
-                      imgList
+                      HomeBloc.imgList
                           .map(
                             (item) => Container(
                               margin: EdgeInsets.all(15.0),

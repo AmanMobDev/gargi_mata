@@ -41,4 +41,10 @@ class DaanBloc extends Bloc<DaanEvent, DaanStates> {
       },
     );
   }
+
+  @override
+  Future<void> close() {
+    _subscription?.cancel(); // Cancel the subscription to avoid memory leaks
+    return super.close();
+  }
 }

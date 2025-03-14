@@ -63,4 +63,19 @@ class DataBaseCollectionServices extends BaseDataBaseServices {
       Utils.printExceptionLogs(data: e.toString());
     }
   }
+
+  @override
+  Future getData(String collectionName) {
+    dynamic responseData;
+    try {
+      responseData = _firebaseFirestore.collection(collectionName).get();
+    } on SocketException {
+      throw InternetException();
+    } on TimeoutException {
+      throw RequestTimeOutException();
+    } on Exception catch (e) {
+      Utils.printExceptionLogs(data: e.toString());
+    }
+    return responseData;
+  }
 }

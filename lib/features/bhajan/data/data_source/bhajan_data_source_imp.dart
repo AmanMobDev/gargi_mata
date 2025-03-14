@@ -11,12 +11,23 @@ class BhajanDataSourceImp implements BhajanDataSource {
   final DataBaseCollectionServices dataBaseCollectionServices;
   BhajanDataSourceImp({required this.dataBaseCollectionServices});
   @override
-  Stream<List<BhajanResponseModel>> getBhajanList() {
-    return dataBaseCollectionServices.readData('bhajan').map((snapshot) {
-      return snapshot.docs.map((doc) {
-        final bhajanListData = doc.data() as Map<String, dynamic>;
-        return BhajanResponseModel.fromJson(bhajanListData);
-      }).toList();
-    });
+  Future<List<BhajanResponseModel>> getBhajanList() async {
+    try {
+      final snapshot = await dataBaseCollectionServices.getData('bhajan');
+
+      List<BhajanResponseModel> audioList =
+          snapshot.docs
+              .map((doc) {
+                final data = doc.data() as Map<String, dynamic>;
+                return BhajanResponseModel.fromJson(data);
+              })
+              .toList()
+              .cast<BhajanResponseModel>();
+
+      return audioList;
+    } catch (e) {
+      debugPrint("Firestore Fetch Error: $e");
+      return []; // ✅ Return an empty list instead of throwing
+    }
   }
 }

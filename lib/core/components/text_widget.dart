@@ -6,10 +6,25 @@ import '../../config/exports/app_export.dart';
 
 class TextWidget extends StatelessWidget {
   final String value;
-  const TextWidget({super.key, required this.value});
+  final double? fontSize;
+  final FontWeight? fontWeight;
+  const TextWidget({
+    super.key,
+    required this.value,
+    this.fontSize,
+    this.fontWeight,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Text(value);
+    return Text(
+      value,
+      softWrap: true,
+      style: TextStyle(
+        color: AppColor.blackColor,
+        fontSize: fontSize,
+        fontWeight: fontWeight,
+      ),
+    );
   }
 }

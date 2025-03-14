@@ -22,7 +22,7 @@ class SplashScreen extends StatelessWidget {
                 fit: StackFit.expand,
                 children: [
                   Image.asset(
-                    'assets/images/gargi.jpeg',
+                    'assets/images/gargi_splash.jpeg',
                     scale: 1.0,
                     fit: BoxFit.fitHeight,
                   ),

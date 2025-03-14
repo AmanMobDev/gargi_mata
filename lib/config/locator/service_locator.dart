@@ -1,7 +1,6 @@
 import 'package:gargi_mata/features/bhajan/data/data_source/bhajan_data_source_imp.dart';
 import 'package:gargi_mata/features/bhajan/data/repository/bhajan_data_repository.dart';
 import 'package:gargi_mata/features/bhajan/domain/usecase/bhajan_use_case.dart';
-import 'package:gargi_mata/features/bhajan/presentation/bloc/bhajan_bloc.dart';
 import 'package:gargi_mata/features/daan/data/data_source/daan_data_source_imp.dart';
 import 'package:gargi_mata/features/daan/data/repository/daan_data_repository.dart';
 import 'package:gargi_mata/features/daan/presentation/bloc/daan_bloc.dart';
@@ -135,8 +134,8 @@ Future<void> setupLocator() async {
     GetBhajanUseCase(bhajanDataRepository: locator<BhajanDataRepository>()),
   );
 
-  locator.registerFactory<BhajanBloc>(
-    () => BhajanBloc(getBhajanUseCase: locator<GetBhajanUseCase>()),
+  locator.registerFactory<AudioBloc>(
+    () => AudioBloc(fetchAudioListUseCase: locator<GetBhajanUseCase>()),
   );
 
   locator.registerSingleton<MantraDataSourceImp>(
@@ -156,6 +155,4 @@ Future<void> setupLocator() async {
   locator.registerFactory<MantraBloc>(
     () => MantraBloc(getMantraUseCase: locator<GetMantraUseCase>()),
   );
-
-  locator.registerFactory<AudioPlayerBloc>(() => AudioPlayerBloc());
 }

@@ -33,4 +33,10 @@ class GalleryBloc extends Bloc<GalleryEvents, GalleryStates> {
       }
     });
   }
+
+  @override
+  Future<void> close() {
+    _subscription?.cancel(); // Cancel the subscription to avoid memory leaks
+    return super.close();
+  }
 }

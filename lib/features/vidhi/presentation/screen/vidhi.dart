@@ -1,6 +1,4 @@
 import '../../../../config/exports/app_export.dart';
-import '../../../../core/components/base_screen.dart';
-import '../../../../core/components/common_screen.dart';
 
 /*******************************************************************************
  *Created By Aman Mishra
@@ -16,7 +14,7 @@ class _VidhiScreenState extends State<VidhiScreen> {
   @override
   Widget build(BuildContext context) {
     return CommonScreen(
-      appTitle: "",
+      appTitle: "विधि",
       child: Container(
         width: MediaQuery.sizeOf(context).width,
         height: MediaQuery.sizeOf(context).height,

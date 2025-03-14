@@ -1,52 +1,97 @@
+import 'package:bloc/bloc.dart';
 import 'package:just_audio/just_audio.dart';
 
-import '../../../../config/exports/app_export.dart';
+import '../../data/model/bhajan_response_model.dart';
+import '../../domain/usecase/bhajan_use_case.dart';
+import 'audio_event.dart';
+import 'audio_state.dart';
 
-class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
+class AudioBloc extends Bloc<AudioEvent, AudioState> {
+  final GetBhajanUseCase fetchAudioListUseCase;
   final AudioPlayer _audioPlayer = AudioPlayer();
-  String? _currentUrl;
+  bool isPlaying = false;
 
-  AudioPlayerBloc() : super(AudioStoppedState()) {
-    on<TogglePlayPauseEvent>((event, emit) async {
-      if (state is AudioPlayingState &&
-          (state as AudioPlayingState).currentUrl == event.url) {
-        debugPrint("Pausing Audio: ${event.url}");
-        _audioPlayer.pause();
-        emit(AudioPausedState(event.url));
-      } else {
-        await _audioPlayer.setUrl(event.url);
-        await _audioPlayer.play();
-        _currentUrl = event.url;
-        emit(AudioPlayingState(_currentUrl!));
-      }
-    });
+  List<BhajanResponseModel> _audioList = [];
+
+  AudioBloc({required this.fetchAudioListUseCase}) : super(AudioLoading()) {
+    on<LoadAudioList>(_onLoadAudioList);
+    on<PlayAudio>(_onPlayAudio);
+    on<PauseAudio>(_onPauseAudio);
+    on<StopAudio>(_onStopAudio);
+    // on<SeekAudio>(_onSeekAudio);
   }
-}
 
-// Events
-abstract class AudioPlayerEvent {}
+  // ✅ Load the audio list from Firestore
+  Future<void> _onLoadAudioList(
+    LoadAudioList event,
+    Emitter<AudioState> emit,
+  ) async {
+    emit(AudioLoading());
+    try {
+      isPlaying = false;
+      final audioList = await fetchAudioListUseCase();
+      _audioList = audioList;
+      emit(AudioLoaded(audioList: audioList, isPlaying: false));
+    } catch (e) {
+      emit(AudioError("Failed to load audio"));
+    }
+  }
 
-class TogglePlayPauseEvent extends AudioPlayerEvent {
-  final String url;
-  TogglePlayPauseEvent(this.url);
-}
+  // ✅ Play the selected audio
+  Future<void> _onPlayAudio(PlayAudio event, Emitter<AudioState> emit) async {
+    try {
+      isPlaying = true;
+      await _audioPlayer.setUrl(event.url);
+      await _audioPlayer.play();
+      emit(
+        AudioPlaying(audioList: _audioList, isPlaying: true, url: event.url),
+      );
+    } catch (e) {
+      emit(AudioError("Error playing audio"));
+    }
+  }
 
-class SeekAudioEvent extends AudioPlayerEvent {
-  final Duration position;
-  SeekAudioEvent(this.position);
-}
+  // ✅ Pause the current audio
+  Future<void> _onPauseAudio(PauseAudio event, Emitter<AudioState> emit) async {
+    if (isPlaying) {
+      isPlaying = false;
+      await _audioPlayer.pause();
+      emit(
+        AudioPaused(audioList: _audioList, isPlaying: false, url: event.url),
+      );
+    }
+  }
 
-// States
-abstract class AudioPlayerState {}
+  // ✅ Stop the current audio
+  Future<void> _onStopAudio(StopAudio event, Emitter<AudioState> emit) async {
+    if (isPlaying) {
+      isPlaying = false;
+      await _audioPlayer.stop();
+      emit(AudioLoaded(isPlaying: false, audioList: _audioList));
+    }
+  }
 
-class AudioStoppedState extends AudioPlayerState {}
+  Future<void> _onSeekAudio(PlayAudio event, Emitter<AudioState> emit) async {
+    try {
+      isPlaying = true;
+      //  await _audioPlayer.seek(event.position);
+      emit(
+        AudioPlaying(
+          audioList: _audioList,
+          isPlaying: true,
+          url: event.url,
+          //position: event.position,
+          //duration: _audioPlayer.duration ?? Duration.zero,
+        ),
+      );
+    } catch (e) {
+      emit(AudioError("Error playing audio"));
+    }
+  }
 
-class AudioPlayingState extends AudioPlayerState {
-  final String currentUrl;
-  AudioPlayingState(this.currentUrl);
-}
-
-class AudioPausedState extends AudioPlayerState {
-  final String currentUrl;
-  AudioPausedState(this.currentUrl);
+  @override
+  Future<void> close() {
+    _audioPlayer.dispose();
+    return super.close();
+  }
 }
