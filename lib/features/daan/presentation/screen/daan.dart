@@ -1,7 +1,6 @@
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../../config/exports/app_export.dart';
-import '../bloc/daan_bloc.dart';
 
 /*******************************************************************************
  *Created By Aman Mishra
@@ -31,7 +30,7 @@ class _DaanScreenState extends State<DaanScreen> {
           stream: context.read<DaanBloc>().daanDataUseCase(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return customCircularProgressIndicator();
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

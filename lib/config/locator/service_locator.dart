@@ -7,6 +7,9 @@ import 'package:gargi_mata/features/daan/presentation/bloc/daan_bloc.dart';
 import 'package:gargi_mata/features/gallery/data/data_source/data_source_imp.dart';
 import 'package:gargi_mata/features/gallery/domain/usecase/gallery_use_case.dart';
 import 'package:gargi_mata/features/gallery/presentation/bloc/gallery_bloc.dart';
+import 'package:gargi_mata/features/history/data/repository/history_data_repository.dart';
+import 'package:gargi_mata/features/history/domain/usecase/history_use_case.dart';
+import 'package:gargi_mata/features/history/presentation/bloc/history_bloc.dart';
 import 'package:gargi_mata/features/home/data/data_source/home_data_source_imp.dart';
 import 'package:gargi_mata/features/home/data/repository/home_data_repository.dart';
 import 'package:gargi_mata/features/mantra/data/data_source/mantra_data_source_imp.dart';
@@ -14,12 +17,17 @@ import 'package:gargi_mata/features/mantra/data/repository/mantra_data_repositor
 import 'package:gargi_mata/features/mantra/domain/usecase/mantra_use_case.dart';
 import 'package:gargi_mata/features/mantra/presentation/bloc/mantra_bloc.dart';
 import 'package:gargi_mata/features/samagri/presentation/bloc/samagri_bloc.dart';
+import 'package:gargi_mata/features/vidhi/data/repository/vidhi_data_repository.dart';
+import 'package:gargi_mata/features/vidhi/domain/usecase/vidhi_use_case.dart';
+import 'package:gargi_mata/features/vidhi/presentation/bloc/vidhi_bloc.dart';
 
-import '../../features/bhajan/presentation/bloc/audio_player_bloc.dart';
+import '../../features/bhajan/presentation/bloc/bhajan_bloc.dart';
 import '../../features/gallery/data/repository/gallery_data_repository.dart';
+import '../../features/history/data/data_source/history_data_source_imp.dart';
 import '../../features/samagri/data/data_source/samagri_data_source_imp.dart';
 import '../../features/samagri/data/repository/samagri_data_repository.dart';
 import '../../features/samagri/domain/usecase/samagri_use_case.dart';
+import '../../features/vidhi/data/data_source/vidhi_data_source_imp.dart';
 import '../exports/app_export.dart';
 
 final GetIt locator = GetIt.instance;
@@ -50,6 +58,7 @@ Future<void> setupLocator() async {
     () => JoinBloc(getJoinDataUseCase: locator<GetJoinDataUseCase>()),
   );
 
+  /// Register Daan Data
   locator.registerSingleton<DaanDataSourceImp>(
     DaanDataSourceImp(
       dataBaseCollectionServices: locator<DataBaseCollectionServices>(),
@@ -68,6 +77,7 @@ Future<void> setupLocator() async {
     () => DaanBloc(daanDataUseCase: locator<DaanUseCase>()),
   );
 
+  /// Register Samagri Data
   locator.registerSingleton<SamagriDataSourceImp>(
     SamagriDataSourceImp(
       dataBaseCollectionServices: locator<DataBaseCollectionServices>(),
@@ -86,6 +96,7 @@ Future<void> setupLocator() async {
     () => SamagriBloc(samagriUseCase: locator<SamagriUseCase>()),
   );
 
+  /// Register Home Data
   locator.registerSingleton<HomeDataSourceImp>(
     HomeDataSourceImp(services: locator<DataBaseCollectionServices>()),
   );
@@ -101,6 +112,8 @@ Future<void> setupLocator() async {
   locator.registerFactory<HomeBloc>(
     () => HomeBloc(homeUseCase: locator<HomeUseCase>()),
   );
+
+  /// Register Gallery Data
 
   locator.registerSingleton<GalleryDataSourceImp>(
     GalleryDataSourceImp(
@@ -120,6 +133,8 @@ Future<void> setupLocator() async {
     () => GalleryBloc(getGalleryUseCase: locator<GetGalleryUseCase>()),
   );
 
+  /// Register Bhajan Data
+
   locator.registerSingleton<BhajanDataSourceImp>(
     BhajanDataSourceImp(
       dataBaseCollectionServices: locator<DataBaseCollectionServices>(),
@@ -134,9 +149,11 @@ Future<void> setupLocator() async {
     GetBhajanUseCase(bhajanDataRepository: locator<BhajanDataRepository>()),
   );
 
-  locator.registerFactory<AudioBloc>(
-    () => AudioBloc(fetchAudioListUseCase: locator<GetBhajanUseCase>()),
+  locator.registerFactory<BhajanBloc>(
+    () => BhajanBloc(fetchAudioListUseCase: locator<GetBhajanUseCase>()),
   );
+
+  /// Register Mantra Data
 
   locator.registerSingleton<MantraDataSourceImp>(
     MantraDataSourceImp(
@@ -154,5 +171,43 @@ Future<void> setupLocator() async {
 
   locator.registerFactory<MantraBloc>(
     () => MantraBloc(getMantraUseCase: locator<GetMantraUseCase>()),
+  );
+
+  /// Register Vidhi Data
+
+  locator.registerSingleton<VidhiDataSourceImp>(
+    VidhiDataSourceImp(dbService: locator<DataBaseCollectionServices>()),
+  );
+
+  locator.registerSingleton<VidhiDataRepository>(
+    VidhiDataRepository(vidhiDataSourceImp: locator<VidhiDataSourceImp>()),
+  );
+
+  locator.registerSingleton<GetVidhiUseCase>(
+    GetVidhiUseCase(vidhiDataRepository: locator<VidhiDataRepository>()),
+  );
+
+  locator.registerFactory<VidhiBloc>(
+    () => VidhiBloc(getVidhiUseCase: locator<GetVidhiUseCase>()),
+  );
+
+  /// Register History Data
+
+  locator.registerSingleton<HistoryDataSourceImp>(
+    HistoryDataSourceImp(
+      dataBaseCollectionServices: locator<DataBaseCollectionServices>(),
+    ),
+  );
+
+  locator.registerSingleton<HistoryDataRepository>(
+    HistoryDataRepository(historyDataSource: locator<HistoryDataSourceImp>()),
+  );
+
+  locator.registerSingleton<GetHistoryUseCase>(
+    GetHistoryUseCase(historyDataRepository: locator<HistoryDataRepository>()),
+  );
+
+  locator.registerFactory<HistoryBloc>(
+    () => HistoryBloc(getHistoryDataUseCase: locator<GetHistoryUseCase>()),
   );
 }

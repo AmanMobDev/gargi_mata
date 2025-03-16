@@ -13,7 +13,7 @@ class _BaseScreenState extends State<BaseScreen> {
     HomeScreen(),
     JoinScreen(),
     GalleryScreen(),
-    HistoryScreen(),
+    // HistoryScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -60,16 +60,16 @@ class _BaseScreenState extends State<BaseScreen> {
 
           onTap: _onItemTapped,
           items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'होम'),
             BottomNavigationBarItem(
               icon: Icon(Icons.join_right),
-              label: 'Join',
+              label: 'जुड़े',
             ),
-            BottomNavigationBarItem(icon: Icon(Icons.photo), label: 'Gallery'),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
+            BottomNavigationBarItem(icon: Icon(Icons.photo), label: 'गैलरी'),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.settings),
+            //   label: 'Settings',
+            // ),
           ],
         ),
       ),

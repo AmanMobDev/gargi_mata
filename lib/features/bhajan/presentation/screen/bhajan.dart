@@ -1,8 +1,8 @@
 import '../../../../config/exports/app_export.dart';
 import '../../data/model/bhajan_response_model.dart';
-import '../bloc/audio_event.dart';
-import '../bloc/audio_player_bloc.dart';
-import '../bloc/audio_state.dart';
+import '../bloc/bhajan_bloc.dart';
+import '../bloc/bhajan_event.dart';
+import '../bloc/bhajan_state.dart';
 
 class BhajanScreen extends StatefulWidget {
   const BhajanScreen({super.key});
@@ -85,6 +85,8 @@ class _BhajanScreenState extends State<BhajanScreen> {
   //   super.dispose();
   // }
 
+  String? playingUrl;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -92,306 +94,183 @@ class _BhajanScreenState extends State<BhajanScreen> {
 
     Future.delayed(Duration.zero, () {
       if (mounted) {
-        context.read<AudioBloc>().add(LoadAudioList());
+        context.read<BhajanBloc>().add(LoadAudioList());
       }
     });
-  }
-
-  String _formatDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, "0");
-    String minutes = twoDigits(duration.inMinutes);
-    String seconds = twoDigits(duration.inSeconds.remainder(60));
-    return "$minutes:$seconds";
   }
 
   @override
   Widget build(BuildContext context) {
     return CommonScreen(
       appTitle: "भजन",
-      child: BlocBuilder<AudioBloc, AudioState>(
-        builder: (context, state) {
-          List<BhajanResponseModel> audioList = [];
+      child: SizedBox(
+        width: MediaQuery.sizeOf(context).width,
+        height: MediaQuery.sizeOf(context).height,
+        child: BlocBuilder<BhajanBloc, BhajanState>(
+          bloc: context.read<BhajanBloc>(),
+          builder: (context, state) {
+            List<BhajanResponseModel> audioList = [];
 
-          if (state is AudioLoading) {
-            return customCircularProgressIndicator();
-          } else if (state is AudioLoaded) {
-            audioList = state.audioList; // Extract audio list
-          } else if (state is AudioPlaying && state is AudioPaused) {
-            audioList =
-                (state as dynamic).audioList; // Ensure we always have the list
-          } else if (state is AudioError) {
-            return Center(child: Text(state.message));
-          }
+            if (state is AudioLoading) {
+              return customCircularProgressIndicator();
+            } else if (state is AudioLoaded) {
+              audioList = state.audioList; // Extract audio list
+            } else if (state is AudioPlaying && state is AudioPaused) {
+              audioList =
+                  (state as dynamic)
+                      .audioList; // Ensure we always have the list
+            } else if (state is AudioError) {
+              return Center(child: Text(state.message));
+            }
 
-          return ListView.builder(
-            itemCount: audioList.length,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            shrinkWrap: true,
-            physics: BouncingScrollPhysics(),
-            itemBuilder: (context, index) {
-              // ✅ Get duration and current position
-              final Duration duration =
-                  state is AudioPlaying ? Duration.zero : Duration.zero;
-              final Duration position =
-                  state is AudioPlaying ? Duration.zero : Duration.zero;
+            return ListView.builder(
+              itemCount: audioList.length,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              shrinkWrap: true,
+              physics: BouncingScrollPhysics(),
+              itemBuilder: (context, index) {
+                dynamic duration = Duration.zero;
+                dynamic position = Duration.zero;
 
-              return Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                margin: EdgeInsets.all(10.0),
-                elevation: 5.0,
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.max,
-                        //crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            audioList[index].fileName,
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              if (context.read<AudioBloc>().isPlaying) {
-                                context.read<AudioBloc>().add(
-                                  StopAudio(isPlaying: false),
-                                );
-                              } else {
-                                context.read<AudioBloc>().add(
-                                  PlayAudio(
-                                    url: audioList[index].url,
-                                    isPlaying: true,
-                                  ),
-                                );
-                              }
-                            },
-                            child: Icon(
-                              context.read<AudioBloc>().isPlaying
-                                  ? Icons.pause_circle_filled
-                                  : Icons.play_circle_filled,
-                              color: AppColor.backgroundColor,
-                              size: 48.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                      // ✅ Seek Bar & Duration
-                      SizedBox(height: 8.0),
-                      BlocBuilder<AudioBloc, AudioState>(
-                        builder: (context, state) {
-                          return Column(
-                            children: [
-                              Slider(
-                                min: 0.0,
-                                activeColor: AppColor.backgroundColor,
+                if (state is AudioPlaying) {
+                  duration = state.duration;
+                  position = state.position;
+                }
 
-                                max: duration.inSeconds.toDouble(),
-                                value: position.inSeconds.toDouble().clamp(
-                                  00.0,
-                                  duration.inSeconds.toDouble(),
-                                ),
-                                onChanged: (value) {
-                                  context.read<AudioBloc>().add(
-                                    SeekAudio(Duration(seconds: value.toInt())),
-                                  );
-                                },
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    _formatDuration(position),
-                                  ), // Current Time
-                                  Text(
-                                    _formatDuration(duration),
-                                  ), // Total Duration
-                                ],
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ],
+                return Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
                   ),
-                ),
-              );
-            },
-          );
-        },
+                  margin: EdgeInsets.all(10.0),
+                  elevation: 5.0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.max,
+                          //crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              audioList[index].fileName,
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                final bhajanBloc = context.read<BhajanBloc>();
+
+                                setState(() {
+                                  if (playingUrl == audioList[index].url &&
+                                      bhajanBloc.isPlaying) {
+                                    // If the clicked item is playing, stop it
+                                    bhajanBloc.add(StopAudio(isPlaying: false));
+                                    playingUrl =
+                                        null; // Reset to no audio playing
+                                  } else {
+                                    // Play new audio and update the playing URL
+                                    bhajanBloc.add(
+                                      PlayAudio(
+                                        url: audioList[index].url,
+                                        isPlaying: true,
+                                      ),
+                                    );
+                                    playingUrl =
+                                        audioList[index]
+                                            .url; // Update playing URL
+                                  }
+                                });
+
+                                // setState(() {
+                                //   if (context.read<BhajanBloc>().isPlaying) {
+                                //     context.read<BhajanBloc>().add(
+                                //       StopAudio(isPlaying: false),
+                                //     );
+                                //   } else {
+                                //     context.read<BhajanBloc>().add(
+                                //       PlayAudio(
+                                //         url: audioList[index].url,
+                                //         isPlaying: true,
+                                //       ),
+                                //     );
+                                //   }
+                                // });
+                              },
+                              child: Icon(
+                                playingUrl == audioList[index].url
+                                    ? Icons.pause_circle_filled
+                                    : Icons.play_circle_filled,
+                                color: AppColor.backgroundColor,
+                                size: 48.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                        // // ✅ Seek Bar & Duration
+                        // SizedBox(height: 8.0),
+                        // playingUrl == audioList[index].url
+                        //     ? Column(
+                        //       mainAxisSize: MainAxisSize.min,
+                        //       crossAxisAlignment: CrossAxisAlignment.center,
+                        //       mainAxisAlignment: MainAxisAlignment.center,
+                        //       children: [
+                        //         Slider(
+                        //           min: 0.0,
+                        //           activeColor: AppColor.backgroundColor,
+                        //
+                        //           max:
+                        //               duration.inSeconds > 0
+                        //                   ? duration.inSeconds.toDouble()
+                        //                   : 1.0,
+                        //           value:
+                        //               duration.inSeconds > 0
+                        //                   ? position.inSeconds.toDouble().clamp(
+                        //                     0.0,
+                        //                     duration.inSeconds.toDouble(),
+                        //                   )
+                        //                   : 0.0,
+                        //           onChanged: (value) {
+                        //             context.read<BhajanBloc>().add(
+                        //               SeekAudio(
+                        //                 Duration(seconds: value.toInt()),
+                        //               ),
+                        //             );
+                        //           },
+                        //         ),
+                        //         Row(
+                        //           mainAxisAlignment:
+                        //               MainAxisAlignment.spaceBetween,
+                        //           children: [
+                        //             Text(
+                        //               context.read<BhajanBloc>().formatDuration(
+                        //                 position,
+                        //               ),
+                        //             ), // Current Time
+                        //             Text(
+                        //               context.read<BhajanBloc>().formatDuration(
+                        //                 duration,
+                        //               ),
+                        //             ), // Total Duration
+                        //           ],
+                        //         ),
+                        //       ],
+                        //     )
+                        //     : Container(),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
-
-      // BlocBuilder<AudioBloc, AudioState>(
-      //   builder: (context, state) {
-      //     if (state is AudioLoading) {
-      //       return customCircularProgressIndicator();
-      //     } else if (state is AudioLoaded) {
-      //       return ListView.builder(
-      //         itemCount: state.audioList.length,
-      //         itemBuilder: (context, index) {
-      //           bool isPlaying = state is AudioPlaying;
-      //           return Card(
-      //             shape: RoundedRectangleBorder(
-      //               borderRadius: BorderRadius.circular(15.0),
-      //             ),
-      //             margin: EdgeInsets.all(10.0),
-      //             elevation: 10.0,
-      //             child: Padding(
-      //               padding: const EdgeInsets.all(10.0),
-      //               child: Column(
-      //                 crossAxisAlignment: CrossAxisAlignment.start,
-      //                 children: [
-      //                   Row(
-      //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //                     children: [
-      //                       Text(
-      //                         state.audioList[index].fileName,
-      //                         style: TextStyle(
-      //                           fontSize: 14.0,
-      //                           fontWeight: FontWeight.bold,
-      //                         ),
-      //                       ),
-      //
-      //                       GestureDetector(
-      //                         onTap: () {
-      //                           if (isPlaying) {
-      //                             context.read<AudioBloc>().add(StopAudio());
-      //                           } else {
-      //                             context.read<AudioBloc>().add(
-      //                               PlayAudio(state.audioList[index].url),
-      //                             );
-      //                           }
-      //                         },
-      //                         child: Icon(
-      //                           isPlaying
-      //                               ? Icons.pause_circle_filled
-      //                               : Icons.play_circle_filled,
-      //                           color: AppColor.backgroundColor,
-      //                           size: 48.0,
-      //                         ),
-      //                       ),
-      //                     ],
-      //                   ),
-      //                   //SizedBox(height: 10.0),
-      //                   // BlocBuilder<AudioPlayerBloc, AudioPlayerState>(
-      //                   //   builder: (context, state) {
-      //                   //     final position =
-      //                   //         state is AudioPlayingState
-      //                   //             ? state.position
-      //                   //             : Duration.zero;
-      //                   //     final duration =
-      //                   //         state is AudioPlayingState
-      //                   //             ? state.duration
-      //                   //             : Duration.zero;
-      //                   //     return Column(
-      //                   //       children: [
-      //                   //         Slider(
-      //                   //           min: 0.0,
-      //                   //           max: duration.inSeconds.toDouble(),
-      //                   //           value: position.inSeconds.toDouble().clamp(
-      //                   //             0.0,
-      //                   //             duration.inSeconds.toDouble(),
-      //                   //           ),
-      //                   //           onChanged: (value) {
-      //                   //             context.read<AudioPlayerBloc>().add(
-      //                   //               SeekAudioEvent(Duration(seconds: value.toInt())),
-      //                   //             );
-      //                   //           },
-      //                   //         ),
-      //                   //         Row(
-      //                   //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //                   //           children: [
-      //                   //             Text(_formatDuration(position)),
-      //                   //             Text(_formatDuration(duration)),
-      //                   //           ],
-      //                   //         ),
-      //                   //       ],
-      //                   //     );
-      //                   //   },
-      //                   // ),
-      //                 ],
-      //               ),
-      //             ),
-      //           );
-      //           ;
-      //         },
-      //       );
-      //     } else if (state is AudioError) {
-      //       return Center(child: Text(state.message));
-      //     }
-      //     return Container();
-      //   },
-      // ),
-      // child: BlocBuilder<AudioBloc, AudioState>(
-      //   builder: (context, state) {
-      //     if (state is AudioLoading) {
-      //       return Center(child: CircularProgressIndicator());
-      //     } else if (state is AudioLoaded) {
-      //       return ListView.builder(
-      //         itemCount: state.audioList.length,
-      //         itemBuilder: (context, index) {
-      //           final audio = state.audioList[index];
-      //           debugPrint("Audio Url:::${audio.url}");
-      //           return ListTile(
-      //             title: Text(audio.fileName, style: TextStyle(fontSize: 18)),
-      //             trailing: BlocBuilder<AudioBloc, AudioState>(
-      //               builder: (context, audioState) {
-      //                 bool isPlaying =
-      //                     (audioState is AudioPlaying &&
-      //                         audioState.url == audio.url);
-      //                 return IconButton(
-      //                   icon: Icon(isPlaying ? Icons.stop : Icons.play_arrow),
-      //                   onPressed: () {
-      //                     if (isPlaying) {
-      //                       context.read<AudioBloc>().add(StopAudio());
-      //                     } else {
-      //                       context.read<AudioBloc>().add(PlayAudio(audio.url));
-      //                     }
-      //                   },
-      //                 );
-      //               },
-      //             ),
-      //           );
-      //         },
-      //       );
-      //     } else if (state is AudioError) {
-      //       return Center(child: Text(state.message));
-      //     }
-      //     return Center(child: Text("No Data"));
-      //   },
-      // ),
-
-      // StreamBuilder<List<BhajanResponseModel>>(
-      //   stream: context.read<BhajanBloc>().getBhajanUseCase(),
-      //   builder: (context, snapshot) {
-      //     if (snapshot.connectionState == ConnectionState.waiting) {
-      //       return customCircularProgressIndicator();
-      //     } else if (snapshot.hasError) {
-      //       return Center(child: Text('Error: ${snapshot.error}'));
-      //     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-      //       return Center(child: Text("No data available"));
-      //     } else {
-      //       final bhajanDataList = snapshot.data!;
-      //
-      //       return ListView.builder(
-      //         itemCount: bhajanDataList.length,
-      //         itemBuilder: (context, index) {
-      //           return BhajanCard(bhajan: bhajanDataList[index]);
-      //         },
-      //       );
-      //     }
-      //   },
-      // ),
     );
   }
 }

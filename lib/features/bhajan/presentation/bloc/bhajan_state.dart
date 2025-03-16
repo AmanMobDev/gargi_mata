@@ -1,14 +1,14 @@
 import '../../../../config/exports/app_export.dart';
 import '../../data/model/bhajan_response_model.dart';
 
-abstract class AudioState extends Equatable {
+abstract class BhajanState extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class AudioLoading extends AudioState {}
+class AudioLoading extends BhajanState {}
 
-class AudioLoaded extends AudioState {
+class AudioLoaded extends BhajanState {
   final List<BhajanResponseModel> audioList;
   final bool isPlaying;
   AudioLoaded({required this.audioList, required this.isPlaying});
@@ -17,21 +17,25 @@ class AudioLoaded extends AudioState {
   List<Object?> get props => [audioList, isPlaying];
 }
 
-class AudioPlaying extends AudioState {
-  final String url;
-  final List<BhajanResponseModel> audioList;
+class AudioPlaying extends BhajanState {
+  final String? url;
+  final List<BhajanResponseModel>? audioList;
   final bool isPlaying;
+  final Duration? position;
+  final Duration? duration;
   AudioPlaying({
     required this.url,
-    required this.audioList,
+    this.audioList,
     required this.isPlaying,
+    this.position,
+    this.duration,
   });
 
   @override
-  List<Object?> get props => [url, audioList, isPlaying];
+  List<Object?> get props => [url, audioList, isPlaying, position, duration];
 }
 
-class AudioPaused extends AudioState {
+class AudioPaused extends BhajanState {
   final String url;
   final List<BhajanResponseModel> audioList;
   final bool isPlaying;
@@ -45,7 +49,7 @@ class AudioPaused extends AudioState {
   List<Object?> get props => [url, audioList, isPlaying];
 }
 
-class AudioStopped extends AudioState {
+class AudioStopped extends BhajanState {
   final List<BhajanResponseModel> audioList;
   final bool isPlaying;
   AudioStopped({required this.audioList, required this.isPlaying});
@@ -54,7 +58,7 @@ class AudioStopped extends AudioState {
   List<Object?> get props => [audioList, isPlaying];
 }
 
-class AudioError extends AudioState {
+class AudioError extends BhajanState {
   final String message;
   AudioError(this.message);
 

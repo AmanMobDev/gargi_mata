@@ -1,13 +1,13 @@
 import '../../../../config/exports/app_export.dart';
 
-abstract class AudioEvent extends Equatable {
+abstract class BhajanEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class LoadAudioList extends AudioEvent {}
+class LoadAudioList extends BhajanEvent {}
 
-class PlayAudio extends AudioEvent {
+class PlayAudio extends BhajanEvent {
   final String url;
   final bool isPlaying;
   PlayAudio({required this.url, required this.isPlaying});
@@ -16,7 +16,7 @@ class PlayAudio extends AudioEvent {
   List<Object?> get props => [url, isPlaying];
 }
 
-class PauseAudio extends AudioEvent {
+class PauseAudio extends BhajanEvent {
   final String url;
   final bool isPlaying;
   PauseAudio({required this.url, required this.isPlaying});
@@ -25,13 +25,14 @@ class PauseAudio extends AudioEvent {
   List<Object?> get props => [url, isPlaying];
 }
 
-class StopAudio extends AudioEvent {
-  // final String url;
+class StopAudio extends BhajanEvent {
   final bool isPlaying;
   StopAudio({required this.isPlaying});
 }
 
-class SeekAudio extends AudioEvent {
+class SeekAudio extends BhajanEvent {
   final Duration position;
   SeekAudio(this.position);
+  @override
+  List<Object?> get props => [position];
 }

@@ -51,23 +51,13 @@ class _MantraScreenState extends State<MantraScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                       SizedBox(height: 15.0),
-                      Text(
-                        mantraData[index].mantra,
-                        style: TextStyle(
-                          color: AppColor.blackColor,
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      TextWidget(
+                        value: mantraData[index].mantra,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.justify,
                       ),
                       SizedBox(height: 12.0),
-                      // Divider(
-                      //   color: AppColor.backgroundColor,
-                      //   height: 2.0,
-                      //   thickness: 2.0,
-                      //   indent: 10.0,
-                      //   endIndent: 10.0,
-                      // ),
-                      // SizedBox(height: 10.0),
                     ],
                   );
                 },

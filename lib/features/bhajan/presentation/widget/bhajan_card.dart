@@ -1,11 +1,11 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:gargi_mata/features/bhajan/presentation/bloc/audio_state.dart';
+// import 'package:gargi_mata/features/bhajan/presentation/bloc/bhajan_state.dart';
 //
 // import '../../../../config/color/app_color.dart';
 // import '../../data/model/bhajan_response_model.dart';
-// import '../bloc/audio_event.dart';
-// import '../bloc/audio_player_bloc.dart';
+// import '../bloc/bhajan_event.dart';
+// import '../bloc/bhajan_bloc.dart';
 //
 // class BhajanCard extends StatelessWidget {
 //   final BhajanResponseModel bhajan;

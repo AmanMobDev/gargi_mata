@@ -1,3 +1,6 @@
+import 'package:gargi_mata/features/vidhi/data/model/response/vidhi_response_model.dart';
+import 'package:gargi_mata/features/vidhi/presentation/bloc/vidhi_bloc.dart';
+
 import '../../../../config/exports/app_export.dart';
 
 /*******************************************************************************
@@ -18,27 +21,49 @@ class _VidhiScreenState extends State<VidhiScreen> {
       child: Container(
         width: MediaQuery.sizeOf(context).width,
         height: MediaQuery.sizeOf(context).height,
-        margin: EdgeInsets.symmetric(horizontal: 15.0),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          physics: BouncingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              spacing: 10.0,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "मंत्र जाप के लिए माला अलग हो \n दीपक प्रज्वल्लित ऐसे करें \n सर्वप्रथम ईश्वर से करें ये प्रार्थना \n सबसे पहले किसकी उपासना करें \n इस बात का रखें विशेष ध्‍यान \n सबसे अंत में करें आरती \n किसकी करें आरती",
-                  style: TextStyle(
-                    color: AppColor.blackColor,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
+        margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+        child: StreamBuilder<List<VidhiResponseModel>>(
+          stream: context.read<VidhiBloc>().getVidhiUseCase(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return customCircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(child: Text("No data available"));
+            } else {
+              final vidhiData = snapshot.data!;
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: vidhiData.length,
+                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                itemBuilder: (context, index) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    // spacing: 10.0,
+                    children: [
+                      SizedBox(height: 10.0),
+                      TextWidget(
+                        value: vidhiData[index].title,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      SizedBox(height: 15.0),
+                      TextWidget(
+                        value: vidhiData[index].description,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.justify,
+                      ),
+                    ],
+                  );
+                },
+                physics: BouncingScrollPhysics(),
+              );
+            }
+          },
         ),
       ),
     );

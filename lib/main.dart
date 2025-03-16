@@ -1,18 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:gargi_mata/features/daan/presentation/bloc/daan_bloc.dart';
-import 'package:gargi_mata/features/gallery/presentation/bloc/gallery_bloc.dart';
-import 'package:gargi_mata/features/gallery/presentation/bloc/gallery_event.dart';
-import 'package:gargi_mata/features/mantra/presentation/bloc/mantra_bloc.dart';
-import 'package:gargi_mata/features/mantra/presentation/bloc/mantra_events.dart';
-import 'package:gargi_mata/features/samagri/presentation/bloc/samagri_bloc.dart';
-import 'package:gargi_mata/features/samagri/presentation/bloc/samagri_event.dart';
 
 import 'config/exports/app_export.dart';
-import 'features/bhajan/presentation/bloc/audio_event.dart';
-import 'features/bhajan/presentation/bloc/audio_player_bloc.dart';
-
-export 'package:intl/date_symbol_data_file.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +8,7 @@ Future<void> main() async {
     value,
   ) {
     Logger.init(kReleaseMode ? LogMode.live : LogMode.debug);
-    Logger.log("log Data");
+    // Logger.log("log Data");
   });
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await setupLocator();
@@ -31,7 +19,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  /// This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -55,17 +43,21 @@ class MyApp extends StatelessWidget {
           create: (context) => locator<GalleryBloc>()..add(GetGalleryEvents()),
         ),
 
-        BlocProvider<AudioBloc>(
-          create: (context) => locator<AudioBloc>()..add(LoadAudioList()),
+        BlocProvider<BhajanBloc>(
+          create: (context) => locator<BhajanBloc>()..add(LoadAudioList()),
         ),
 
         BlocProvider<MantraBloc>(
           create: (context) => locator<MantraBloc>()..add(GetMantraEvent()),
         ),
 
-        // BlocProvider<AudioPlayerBloc>(
-        //   create: (context) => locator<AudioPlayerBloc>(),
-        // ),
+        BlocProvider<VidhiBloc>(
+          create: (context) => locator<VidhiBloc>()..add(GetVidhiEvent()),
+        ),
+
+        BlocProvider<HistoryBloc>(
+          create: (context) => locator<HistoryBloc>()..add(GetHistoryEvent()),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

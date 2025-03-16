@@ -1,3 +1,5 @@
+import 'package:share_plus/share_plus.dart';
+
 import '../../../../config/exports/app_export.dart';
 
 /*******************************************************************************
@@ -33,6 +35,47 @@ class JoinBloc extends Bloc<JoinEvent, JoinStates> {
         }
       }
     });
+  }
+
+  Future<void> launchWhatsAppGroup(String groupLink) async {
+    final Uri url = Uri.parse(groupLink);
+    Share.share('Check out this website: $url');
+  }
+
+  Future<void> launchPhone(String phoneNumber) async {
+    final Uri phoneUri = Uri(scheme: 'tel', path: phoneNumber);
+    if (await canLaunchUrl(phoneUri)) {
+      await launchUrl(phoneUri);
+    } else {
+      throw 'Could not launch $phoneUri';
+    }
+  }
+
+  Future<void> launchEmail(
+    String emailAddress, {
+    String? subject,
+    String? body,
+  }) async {
+    String emailUriString = 'mailto:$emailAddress';
+    if (subject != null || body != null) {
+      emailUriString += '?';
+      if (subject != null) {
+        emailUriString += 'subject=${Uri.encodeComponent(subject)}';
+        if (body != null) {
+          emailUriString += '&';
+        }
+      }
+      if (body != null) {
+        emailUriString += 'body=${Uri.encodeComponent(body)}';
+      }
+    }
+
+    final Uri emailUri = Uri.parse(emailUriString);
+    if (await canLaunchUrl(emailUri)) {
+      await launchUrl(emailUri);
+    } else {
+      throw 'Could not launch $emailUri';
+    }
   }
 
   @override
