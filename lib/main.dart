@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import 'config/exports/app_export.dart';
+import 'features/bhajan/presentation/bloc/play_bhajan/play_bhajan_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<HistoryBloc>(
           create: (context) => locator<HistoryBloc>()..add(GetHistoryEvent()),
         ),
+        BlocProvider<MusicBloc>(create: (context) => MusicBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

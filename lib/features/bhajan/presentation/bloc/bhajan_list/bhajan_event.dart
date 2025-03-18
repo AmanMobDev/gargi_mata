@@ -1,4 +1,4 @@
-import '../../../../config/exports/app_export.dart';
+import '../../../../../config/exports/app_export.dart';
 
 abstract class BhajanEvent extends Equatable {
   @override

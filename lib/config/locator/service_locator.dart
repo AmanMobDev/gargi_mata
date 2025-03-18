@@ -3,25 +3,18 @@ import 'package:gargi_mata/features/bhajan/data/repository/bhajan_data_repositor
 import 'package:gargi_mata/features/bhajan/domain/usecase/bhajan_use_case.dart';
 import 'package:gargi_mata/features/daan/data/data_source/daan_data_source_imp.dart';
 import 'package:gargi_mata/features/daan/data/repository/daan_data_repository.dart';
-import 'package:gargi_mata/features/daan/presentation/bloc/daan_bloc.dart';
 import 'package:gargi_mata/features/gallery/data/data_source/data_source_imp.dart';
 import 'package:gargi_mata/features/gallery/domain/usecase/gallery_use_case.dart';
-import 'package:gargi_mata/features/gallery/presentation/bloc/gallery_bloc.dart';
 import 'package:gargi_mata/features/history/data/repository/history_data_repository.dart';
 import 'package:gargi_mata/features/history/domain/usecase/history_use_case.dart';
-import 'package:gargi_mata/features/history/presentation/bloc/history_bloc.dart';
 import 'package:gargi_mata/features/home/data/data_source/home_data_source_imp.dart';
 import 'package:gargi_mata/features/home/data/repository/home_data_repository.dart';
 import 'package:gargi_mata/features/mantra/data/data_source/mantra_data_source_imp.dart';
 import 'package:gargi_mata/features/mantra/data/repository/mantra_data_repository.dart';
 import 'package:gargi_mata/features/mantra/domain/usecase/mantra_use_case.dart';
-import 'package:gargi_mata/features/mantra/presentation/bloc/mantra_bloc.dart';
-import 'package:gargi_mata/features/samagri/presentation/bloc/samagri_bloc.dart';
 import 'package:gargi_mata/features/vidhi/data/repository/vidhi_data_repository.dart';
 import 'package:gargi_mata/features/vidhi/domain/usecase/vidhi_use_case.dart';
-import 'package:gargi_mata/features/vidhi/presentation/bloc/vidhi_bloc.dart';
 
-import '../../features/bhajan/presentation/bloc/bhajan_bloc.dart';
 import '../../features/gallery/data/repository/gallery_data_repository.dart';
 import '../../features/history/data/data_source/history_data_source_imp.dart';
 import '../../features/samagri/data/data_source/samagri_data_source_imp.dart';
