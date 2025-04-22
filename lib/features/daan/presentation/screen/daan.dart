@@ -2,11 +2,11 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../../config/exports/app_export.dart';
 
-/*******************************************************************************
- *Created By Aman Mishra
- ******************************************************************************/
+/// *****************************************************************************
+///Created By Aman Mishra
+///****************************************************************************
 class DaanScreen extends StatefulWidget {
-  const DaanScreen({Key? key}) : super(key: key);
+  const DaanScreen({super.key});
 
   @override
   State<DaanScreen> createState() => _DaanScreenState();

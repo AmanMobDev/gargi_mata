@@ -23,7 +23,6 @@ dependencies:
   equatable: ^2.0.5
   get_it: ^8.0.3
   firebase_core:
-  firebase_storage:
   flutter_svg: ^2.0.17
   table_calendar:
   just_audio: ^0.9.46
