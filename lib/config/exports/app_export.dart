@@ -30,6 +30,8 @@ export 'package:gargi_mata/core/components/custom_text_widget.dart';
 export 'package:gargi_mata/core/components/text_widget.dart';
 export 'package:gargi_mata/core/route/route.dart';
 export 'package:gargi_mata/core/route/route_name.dart';
+export 'package:gargi_mata/features/bhajan/data/model/bhajan_response_model.dart';
+export 'package:gargi_mata/features/bhajan/data/repository/bhajan_data_repository.dart';
 export 'package:gargi_mata/features/bhajan/presentation/bloc/bhajan_list/bhajan_bloc.dart';
 export 'package:gargi_mata/features/bhajan/presentation/bloc/bhajan_list/bhajan_event.dart';
 export 'package:gargi_mata/features/bhajan/presentation/screen/bhajan_list.dart';
